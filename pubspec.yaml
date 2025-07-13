@@ -1,0 +1,94 @@
+name: rehana_security
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  go_router: ^14.8.0
+  bloc: any
+  flutter_bloc: any
+  flutter_svg: ^2.0.9
+  easy_date_timeline: ^2.0.0
+  pin_code_fields: any
+  flutter_screenutil: ^5.9.3
+  device_preview: ^1.2.0
+  qr_code_scanner_plus: ^2.0.10+1
+  intl: any
+  flutter_localizations:
+    sdk: flutter
+  connectivity_plus: ^6.1.3
+  top_snackbar_flutter: ^3.2.0
+  awesome_snackbar_content: ^0.1.5
+  dropdown_button2: ^2.3.9
+  equatable: ^2.0.7
+  flutter_secure_storage: ^9.2.4
+  dio: ^5.8.0+1
+  dio_cache_interceptor: ^4.0.3
+  get_it: ^8.0.3
+  dartz: ^0.10.1
+  image_picker: ^1.1.2
+  encrypt: ^5.0.3
+  pointycastle: ^3.7.4
+  flutter_launcher_icons: ^0.14.3
+  cached_network_image: ^3.4.1
+  share_plus: ^11.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/logo.png
+    - assets/images/svgbottom/bell_active.svg
+    - assets/images/svgbottom/bell_unactive.svg
+    - assets/images/svgbottom/homeactive.svg
+    - assets/images/svgbottom/home_unactive.svg
+    - assets/images/svgbottom/profile_active.svg
+    - assets/images/svgbottom/profile_unactive.svg
+    - assets/images/circle-check 1.png
+    - assets/images/Group57@2x.png
+
+  fonts:
+    - family: Alexandria
+      fonts:
+        - asset: assets/fonts/Alexandria-Black.ttf
+        - asset: assets/fonts/Alexandria-Bold.ttf
+        - asset: assets/fonts/Alexandria-ExtraLight.ttf
+        - asset: assets/fonts/Alexandria-Light.ttf
+        - asset: assets/fonts/Alexandria-Medium.ttf
+        - asset: assets/fonts/Alexandria-Regular.ttf
+        - asset: assets/fonts/Alexandria-SemiBold.ttf
+        - asset: assets/fonts/Alexandria-Thin.ttf
+        - asset: assets/fonts/Alexandria-VariableFont_wght.ttf
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/rehana.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/rehana.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icon/rehana.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/rehana.png"

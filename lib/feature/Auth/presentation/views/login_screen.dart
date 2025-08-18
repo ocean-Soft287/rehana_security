@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rehana_security/core/router/app_router.dart';
+import 'package:rehana_security/core/widget/show_toast.dart';
 import 'package:rehana_security/feature/Auth/presentation/Manger/auth_cubit.dart';
 import 'package:rehana_security/core/widget/custom_botton.dart';
 import 'package:rehana_security/feature/Auth/presentation/views/widget/custom_text_form_field.dart';
@@ -59,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 48.h),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Customtextformfield(
-                      hinttext: 'الايميل',
+                    child: CustomTextFormField(
+                      hintText: 'الايميل',
                       controller: email,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
@@ -71,13 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-
                   SizedBox(height: 48.h),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Customtextformfield(
-                      hinttext: 'كلمة المرور',
+                    child: CustomTextFormField(
+                      hintText: 'كلمة المرور',
                       controller: password,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
@@ -152,41 +152,54 @@ class _LoginScreenState extends State<LoginScreen> {
                   //     ),
                   //   ),
                   // ),
-
                   SizedBox(height: 34.h),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
                         if (state is AuthSuccess) {
+                          showToast(context, 'تم تسجيل الدخول بنجاح');
                           // الانتقال بعد النجاح
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            context.push(AppRouter.home); // استبدلها بالمسار المطلوب
+                            context.push(
+                              AppRouter.home,
+                            ); // استبدلها بالمسار المطلوب
                           });
                         } else if (state is AuthFailure) {
                           // عرض رسالة الخطأ
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("البريد الالكتروني او الباسورد غير صحيح")),
+                              SnackBar(
+                                content: Text(
+                                  "البريد الالكتروني او الباسورد غير صحيح",
+                                ),
+                              ),
                             );
                           });
                         }
                       },
                       builder: (context, state) {
                         AuthCubit auth = context.read<AuthCubit>();
-
-                        return CustomBotton(
-                          text: "تسجيل دخول",
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              auth.login(
-                                email: email.text,
-                                password: password.text,
-                                remberme: tazakarni.value,
-                              );
-                            }
-                          },
-                        );
+                        if (state is AuthLoading) {
+                          return const CircularProgressIndicator(
+                            color: AppColors.green,
+                          );
+                        } else if (state is AuthFailure) {
+                          return Text(state.message);
+                        } else {
+                          return CustomBotton(
+                            text: "تسجيل دخول",
+                            onTap: () {
+                              if (formKey.currentState!.validate()) {
+                                auth.login(
+                                  email: email.text,
+                                  password: password.text,
+                                  remberme: tazakarni.value,
+                                );
+                              }
+                            },
+                          );
+                        }
                       },
                     ),
                   ),

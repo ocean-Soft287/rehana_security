@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/color/colors.dart';
 
-class Customtextformfield extends StatelessWidget {
-  const Customtextformfield({
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
     super.key,
-    required this.hinttext,
+    required this.hintText,
     required this.controller,
-    this.obesurepass = false,
-    required this.validator, 
-    this.prefixIcon, 
-    this.keyboardType, 
-    this.suffixIcon, 
+    this.obscurePass = false,
+    required this.validator,
+    this.prefixIcon,
+    this.keyboardType,
+    this.suffixIcon,
   });
 
-  final String hinttext;
+  final String hintText;
   final TextEditingController controller;
-  final bool obesurepass;
+  final bool obscurePass;
   final String? Function(String?)? validator;
   final Widget? prefixIcon; // Added as optional
   final Widget? suffixIcon; // Added as optional
@@ -24,45 +24,37 @@ class Customtextformfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscurePass,
+      keyboardType: keyboardType,
+      validator: validator,
 
-
-        return TextFormField(
-          controller: controller,
-          obscureText: obesurepass,
-          keyboardType: keyboardType,
-          validator: validator,
-
-          decoration: InputDecoration(
-            hintText: hinttext,
-             hintStyle: TextStyle(color: AppColors.white,fontFamily: "Alexandria"), // Directly pass the font TextStyle
-            filled: true,
-            fillColor:AppColors.bIcon,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: const Color(0xff2970FF).withOpacity(0.5),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: const Color(0xff2970FF).withOpacity(0.1),
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: Color(0xff2970FF),
-                width: 1.0,
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 14,
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-          ),
-        );
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(color: AppColors.white, fontFamily: "Alexandria"),
+        // Directly pass the font TextStyle
+        filled: true,
+        fillColor: AppColors.bIcon,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: AppColors.blue),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: AppColors.blue2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: AppColors.blue3, width: 1.0),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+      ),
+    );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,10 +14,7 @@ void main() {
   setup();
   Bloc.observer = MyBlocObserver();
 
-  runApp(DevicePreview(
-    enabled: false,
-    builder: (context) => const MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

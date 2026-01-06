@@ -20,7 +20,6 @@ dependencies:
   easy_date_timeline: ^2.0.0
   pin_code_fields: any
   flutter_screenutil: ^5.9.3
-  device_preview: ^1.2.0
   qr_code_scanner_plus: ^2.0.10+1
   intl: any
   flutter_localizations:
@@ -41,6 +40,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   cached_network_image: ^3.4.1
   share_plus: ^11.0.0
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:

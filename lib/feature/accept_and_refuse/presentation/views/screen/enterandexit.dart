@@ -18,8 +18,24 @@ class EnterandExit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> rawData = jsonDecode(qrData);
-    final encryptedText = rawData["EncryptedData"];
+    // Extract encrypted data from QR code JSON
+
+    String encryptedText;
+    try {
+      final dynamic decodedData = jsonDecode(qrData);
+      
+      // If the decoded data is a Map, extract the EncryptedData field
+      if (decodedData is Map<String, dynamic>) {
+        encryptedText = decodedData["EncryptedData"] as String? ?? qrData;
+      } else {
+        // If it's not a map, use the decoded data as-is
+        encryptedText = decodedData.toString();
+      }
+    } catch (e) {
+      // If JSON decoding fails, use the raw QR data
+      encryptedText = qrData;
+    }
+    
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: PreferredSize(

@@ -184,9 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           return const CircularProgressIndicator(
                             color: AppColors.green,
                           );
-                        } else if (state is AuthFailure) {
-                          return Text(state.message);
-                        } else {
+                        }  else {
                           return CustomBotton(
                             text: "تسجيل دخول",
                             onTap: () {

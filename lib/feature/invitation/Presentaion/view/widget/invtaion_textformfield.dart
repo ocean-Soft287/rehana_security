@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../../core/color/colors.dart';
 import '../../../../../core/images/font.dart';
@@ -9,11 +10,16 @@ class InvtaionTextformfield extends StatelessWidget {
     required this.name,
     required this.controller,
     this.validator,
+    this.inputFormatters,
+
+
   });
 
   final String name;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +43,8 @@ class InvtaionTextformfield extends StatelessWidget {
                 }
                 return null;
               },
+          inputFormatters: inputFormatters,
+
           decoration: InputDecoration(
             filled: true,
             fillColor: AppColors.white,

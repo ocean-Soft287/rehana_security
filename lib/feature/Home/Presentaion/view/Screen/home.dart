@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rehana_security/core/widget/context_show.dart';
+
 import '../../../../../core/color/colors.dart';
 import '../../../../../core/network/local/flutter_secure_storage.dart';
 import '../../../../../core/router/app_router.dart';
@@ -21,13 +23,14 @@ class Home extends StatelessWidget {
       "تسجيل دعوة يدوي",
       "تسجيل خروج",
     ];
+
     return BlocProvider(
       create: (context) => InternetBloc()..add(InternetChecked()),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(0),
+            preferredSize: const Size.fromHeight(0),
             child: AppBar(
               backgroundColor: AppColors.bIcon,
               elevation: 0,
@@ -53,45 +56,43 @@ class Home extends StatelessWidget {
                     ),
                     child: const RehanaHome(),
                   ),
-
                 ),
 
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => Padding(
+                        (context, index) => Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: 10.sp,
                         horizontal: 12.sp,
                       ),
                       child: HomeContaner(
                         name: chooseFrom[index],
-                        onTap: () {
-                          if (index == 0 || index == 1) {
+                        onTap: () async {
 
+                          if (index == 0 || index == 1) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder:
-                                    (context) => ScanQrScreen(
-                                      name: index == 0 ? 'دخول' : 'خروج',
-                                    ),
-                              ),);
+                                builder: (context) => ScanQrScreen(
+                                  name: index == 0 ? 'دخول' : 'خروج',
+                                ),
+                              ),
+                            );
+                          }
 
-                          } else if (index == 2) {
 
+                          else if (index == 2) {
                             context.push(AppRouter.oneTimeInvitation);
-                          } else if (index == 3) {
-
-                            context.push(AppRouter.kLoginview);
-
-                          } else if (index == 4) {
+                          }
 
 
-                          } else if (index == 5) {
+                          else if (index == 3) {
+                            await SecureStorageService.deleteAll();
 
-                            context.push(AppRouter.kLoginview);
-                            SecureStorageService.deleteAll();
-
+                            context.go(AppRouter.kLoginview);
+                            context.showSuccessMessage(
+                              "تم تسجيل الخروج بنجاح",
+                            );
                           }
                         },
                       ),

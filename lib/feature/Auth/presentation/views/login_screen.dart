@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rehana_security/core/router/app_router.dart';
-import 'package:rehana_security/core/widget/show_toast.dart';
+import 'package:rehana_security/core/widget/context_show.dart';
+import 'package:rehana_security/core/widget/loading_button.dart';
 import 'package:rehana_security/feature/Auth/presentation/Manger/auth_cubit.dart';
 import 'package:rehana_security/core/widget/custom_botton.dart';
 import 'package:rehana_security/feature/Auth/presentation/views/widget/custom_text_form_field.dart';
-
 import '../../../../core/color/colors.dart';
 import '../../../../core/images/images.dart';
 
@@ -67,7 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (value == null || value.isEmpty) {
                           return "يرجى إدخال اسم المستخدم";
                         }
-                        return null;
+                        if (!RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        ).hasMatch(value)) {
+                          return "يرجى إدخال بريد إلكتروني صالح";
+                        } else {
+                          return null;
+                        }
                       },
                     ),
                   ),
@@ -126,65 +132,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: Align(
-                  //     alignment: Alignment.centerRight,
-                  //     child: InkWell(
-                  //       onTap: () {
-                  //         // context.push(AppRouter.kforgetView);
-                  //       },
-                  //       child: Row(
-                  //         mainAxisSize: MainAxisSize.min,
-                  //         children: [
-                  //           Text(
-                  //             "تذكرني",
-                  //             style: TextStyle(
-                  //               fontFamily: "Alexandria",
-                  //               fontSize: 18.sp,
-                  //               fontWeight: FontWeight.w400,
-                  //               color: AppColors.black,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(height: 34.h),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
                         if (state is AuthSuccess) {
-                          showToast(context, 'تم تسجيل الدخول بنجاح');
-                          // الانتقال بعد النجاح
+                          context.showSuccessMessage("تم تسجيل الدخول بنجاح");
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            context.push(
-                              AppRouter.home,
-                            ); // استبدلها بالمسار المطلوب
+                            context.push(AppRouter.home);
                           });
                         } else if (state is AuthFailure) {
-                          // عرض رسالة الخطأ
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "البريد الالكتروني او الباسورد غير صحيح",
-                                ),
-                              ),
-                            );
-                          });
+                          context.showErrorMessage(state.message);
                         }
                       },
                       builder: (context, state) {
                         AuthCubit auth = context.read<AuthCubit>();
                         if (state is AuthLoading) {
-                          return const CircularProgressIndicator(
-                            color: AppColors.green,
-                          );
-                        }  else {
+                          return LoadingButton();
+                        } else {
                           return CustomBotton(
                             text: "تسجيل دخول",
                             onTap: () {

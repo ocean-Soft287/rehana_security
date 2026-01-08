@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rehana_security/core/widget/context_show.dart';
 import '../../../../../core/color/colors.dart';
 import '../../../../../core/images/font.dart';
 import '../../manger/securityonetime_cubit.dart';
@@ -73,6 +75,10 @@ class _OneTimeInvitationState extends State<OneTimeInvitation> {
               ),
               SizedBox(height: 15.h),
               InvtaionTextformfield(
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(12)
+                ],
                 name: "رقم التليفون",
                 controller: _phoneController,
                 validator: (value) {
@@ -203,6 +209,13 @@ class _OneTimeInvitationState extends State<OneTimeInvitation> {
       _fromTime = null;
       _toTime = null;
       selectedVilla = null;
+      context.showSuccessMessage("تم تسجيل الدعوه بنجاح");
+    Future.delayed(const Duration(seconds: 2), () {
+    if (context.mounted) {
+    context.pop();
+    }
+    });
+
 
       // WidgetsBinding.instance.addPostFrameCallback((_) {
       //   showDialog(
@@ -244,12 +257,20 @@ class _OneTimeInvitationState extends State<OneTimeInvitation> {
       //     },
       //   );
       // });
+    }else if (state is SecurityonetimeFailure){
+      return  context .showErrorMessage(state.error );
+
     }
 
 
   },
   builder: (context, state) {
-    return CustomButtonInvtaion(
+    final isLoading = state is SecurityonetimeLoading;
+
+
+  return   CustomButtonInvtaion(
+    isLoading: isLoading,
+
                     text: 'إرسال',
                     onTap: () {
                       if (!_formKey.currentState!.validate()) return;

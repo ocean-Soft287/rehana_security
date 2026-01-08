@@ -95,7 +95,7 @@ class UserInfoScreen extends StatelessWidget {
                 SizedBox(height: AcceptRefuseConstants.bottomSpacing),
                 AcceptAndRefuse(
                   onAccept: onaccept,
-                  onRefuse: onexit,
+                  onRefuse: onexitentre,
                   isLoading: isLoading,
                 ),
               ],

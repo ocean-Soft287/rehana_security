@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/color/colors.dart';
 import '../../../../../core/widget/custom_button_invtaion.dart';
+import '../../../../../core/widget/loading_button.dart';
+import '../../constants/accept_refuse_constants.dart';
 
 class AcceptAndRefuse extends StatelessWidget {
-  /// هنديك Callbacks جاهزة من بره الويدجت
   final VoidCallback onAccept;
   final VoidCallback onRefuse;
+  final bool isLoading;
 
   const AcceptAndRefuse({
     super.key,
     required this.onAccept,
     required this.onRefuse,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+        child: LoadingButton(),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        /// زر قبول
+        /// Accept button
         CustomButtonInvtaion(
-          text: 'قبول',
+          text: AcceptRefuseConstants.acceptButtonText,
           color: AppColors.bIcon,
           onTap: onAccept,
         ),
 
-        /// زر رفض
+        /// Refuse button
         CustomButtonInvtaion(
-          text: 'رفض',
+          text: AcceptRefuseConstants.refuseButtonText,
           color: AppColors.red,
           onTap: onRefuse,
         ),
@@ -35,11 +44,3 @@ class AcceptAndRefuse extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-///رفض
-///context.go(AppRouter.home);

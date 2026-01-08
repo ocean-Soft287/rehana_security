@@ -4,25 +4,32 @@ sealed class EntreExitState {}
 
 final class EntreExitInitial extends EntreExitState {}
 
-final class Invitationdatafaliure extends EntreExitState{
+// Invitation decryption states
+final class InvitationLoading extends EntreExitState {}
+
+final class InvitationFailure extends EntreExitState {
   final String message;
 
-  Invitationdatafaliure(this.message);
-
+  InvitationFailure(this.message);
 }
-final class Invitationsuccess extends EntreExitState{
+
+final class Invitationsuccess extends EntreExitState {
   final GuestInvitationModel guestInvitationModel;
 
   Invitationsuccess({required this.guestInvitationModel});
 }
-final class Isvalidsuccess extends EntreExitState{
+
+// Accept/Cancel validation states
+final class IsvalidLoading extends EntreExitState {}
+
+final class Isvalidsuccess extends EntreExitState {
   final SecurityInvitation securityInvitation;
 
   Isvalidsuccess({required this.securityInvitation});
 }
-final class Isvaliderror extends EntreExitState{
+
+final class Isvaliderror extends EntreExitState {
   final String message;
 
   Isvaliderror({required this.message});
-
 }

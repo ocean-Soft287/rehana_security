@@ -8,36 +8,35 @@ part 'entre_exit_state.dart';
 
 class EntreExitCubit extends Cubit<EntreExitState> {
   EntreExitCubit(this.acceptrepo) : super(EntreExitInitial());
-final Acceptrepo acceptrepo;
+  final Acceptrepo acceptrepo;
 
-  Future<void>  decryption(String data)async{
+  Future<void> decryption(String data) async {
+    emit(InvitationLoading());
 
-  final response= await acceptrepo.decryption(data);
+    final response = await acceptrepo.decryption(data);
 
-  response.fold(
-        (failure) {
-      emit(Invitationdatafaliure(failure.message));
+    response.fold(
+      (failure) {
+        emit(InvitationFailure(failure.message));
+      },
+      (data) {
+        emit(Invitationsuccess(guestInvitationModel: data));
+      },
+    );
+  }
 
-    },
-        (data) {
+  Future<void> isvalid(bool isvalidid, String id) async {
+    emit(IsvalidLoading());
 
-      emit(Invitationsuccess(guestInvitationModel:  data,));
-    },
-  );
+    final response = await acceptrepo.isvalid(isvalidid, id);
 
-}
-
-Future<void>isvalid(bool isvalidid,String id)async{
-    final response=await acceptrepo.isvalid(isvalidid, id);
-
-    response.fold((faliure){
-
-      emit(Isvaliderror(message:faliure.message));
-    },
-            (data){
-      emit(Isvalidsuccess(securityInvitation: data));
-            });
-}
-
-
+    response.fold(
+      (failure) {
+        emit(Isvaliderror(message: failure.message));
+      },
+      (data) {
+        emit(Isvalidsuccess(securityInvitation: data));
+      },
+    );
+  }
 }

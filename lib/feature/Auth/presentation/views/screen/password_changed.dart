@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-
-
 import '../../../../../core/color/colors.dart';
 import '../../../../../core/images/font.dart';
 import '../../../../../core/images/images.dart';
-import '../../../../../core/router/app_router.dart';
 import '../../../../../core/widget/custom_botton.dart';
+import '../../../../Home/Presentaion/view/Screen/home.dart';
 
 class PasswordChanged extends StatelessWidget {
   const PasswordChanged({super.key, required this.message});
@@ -44,7 +41,7 @@ class PasswordChanged extends StatelessWidget {
           CustomBotton(
             text: "حسناً",
             onTap: () {
-              context.go(AppRouter.home);
+             Navigator.push(context, MaterialPageRoute(builder:(context)=> Home()));
             },
           )
         ],

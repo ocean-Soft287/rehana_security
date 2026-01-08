@@ -8,12 +8,14 @@ class AcceptAndRefuse extends StatelessWidget {
   final VoidCallback onAccept;
   final VoidCallback onRefuse;
   final bool isLoading;
+  final bool isExit;
 
   const AcceptAndRefuse({
     super.key,
     required this.onAccept,
     required this.onRefuse,
     this.isLoading = false,
+    this.isExit = false,
   });
 
   @override
@@ -29,14 +31,18 @@ class AcceptAndRefuse extends StatelessWidget {
       children: [
         /// Accept button
         CustomButtonInvtaion(
-          text: AcceptRefuseConstants.acceptButtonText,
+          text: isExit
+              ? AcceptRefuseConstants.confirmExitButtonText
+              : AcceptRefuseConstants.acceptButtonText,
           color: AppColors.bIcon,
           onTap: onAccept,
         ),
 
         /// Refuse button
         CustomButtonInvtaion(
-          text: AcceptRefuseConstants.refuseButtonText,
+          text: isExit
+              ? AcceptRefuseConstants.cancelButtonText
+              : AcceptRefuseConstants.refuseButtonText,
           color: AppColors.red,
           onTap: onRefuse,
         ),

@@ -8,6 +8,7 @@ import 'package:rehana_security/core/router/app_router.dart';
 import 'package:rehana_security/core/widget/loading_button.dart';
 import 'package:rehana_security/feature/Home/Presentaion/view/Screen/home.dart';
 import '../../../../../core/color/colors.dart';
+import '../../../../../core/images/font.dart';
 import '../../../../Auth/presentation/views/screen/password_changed.dart';
 import '../../constants/accept_refuse_constants.dart';
 import '../../manger/entre_exit_cubit.dart';
@@ -38,14 +39,28 @@ class EnterandExit extends StatelessWidget {
       encryptedText = qrData;
     }
 
+    final bool isExit = name == AcceptRefuseConstants.exitActionName;
+
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-          backgroundColor: AppColors.white,
-          elevation: 0,
-          centerTitle: true,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          isExit
+              ? AcceptRefuseConstants.exitScreenTitle
+              : AcceptRefuseConstants.entryScreenTitle,
+          style: TextStyle(
+            color: AppColors.bIcon,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            fontFamily: Font.alex,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: AppColors.bIcon),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: BlocProvider(
@@ -58,8 +73,7 @@ class EnterandExit extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: AcceptRefuseConstants.topSpacingLarge),
-              SizedBox(height: AcceptRefuseConstants.topSpacingMedium.r),
+              SizedBox(height: AcceptRefuseConstants.itemSpacing.h),
               Center(
                 child: BlocConsumer<EntreExitCubit, EntreExitState>(
                   listener: (context, state) {
@@ -126,7 +140,10 @@ class EnterandExit extends StatelessWidget {
                       return UserInfoScreen(
                         guestInvitationModel: state.guestInvitationModel,
                         name: name,
-                        onexit: () => context.go(AppRouter.home),
+                        onexit: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                        ),
                         onaccept: () => cubit.isvalid(
                           true,
                           state.guestInvitationModel.id,

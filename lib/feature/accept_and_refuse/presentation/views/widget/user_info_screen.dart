@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:rehana_security/core/images/font.dart';
+import '../../../../../core/color/colors.dart';
 import '../../../../../core/images/images.dart';
 import '../../../data/model/guest_model.dart';
 import '../../constants/accept_refuse_constants.dart';
@@ -27,6 +29,16 @@ class UserInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formatDateTime(DateTime dateTime) {
+      return DateFormat('MM:dd:yyyy hh:mm a')
+          .format(dateTime)
+          .replaceAll('AM', AcceptRefuseConstants.amLabel)
+          .replaceAll('PM', AcceptRefuseConstants.pmLabel);
+    }
+
+    final bool isExpired = guestInvitationModel.dateTo.isBefore(DateTime.now());
+    final bool isExit = name == AcceptRefuseConstants.exitActionName;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
@@ -41,6 +53,38 @@ class UserInfoScreen extends StatelessWidget {
             width: contentWidth,
             child: Column(
               children: [
+                if (isExpired)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10.h,
+                        horizontal: 16.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.red.withAlpha(25),
+                        borderRadius: BorderRadius.circular(8.r),
+                        border: Border.all(color: AppColors.red),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.warning_amber_rounded, color: AppColors.red),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            child: Text(
+                              AcceptRefuseConstants.expiryWarning,
+                              style: TextStyle(
+                                color: AppColors.red,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Font.alex,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ClipOval(
                   child: SizedBox(
                     width: AcceptRefuseConstants.profileImageSize.r,
@@ -84,19 +128,20 @@ class UserInfoScreen extends StatelessWidget {
                 ),
                 userInfoRow(
                   AcceptRefuseConstants.labelFrom,
-                  guestInvitationModel.dateFrom.toString(),
+                  formatDateTime(guestInvitationModel.dateFrom),
                   context,
                 ),
                 userInfoRow(
                   AcceptRefuseConstants.labelTo,
-                  guestInvitationModel.dateTo.toString(),
+                  formatDateTime(guestInvitationModel.dateTo),
                   context,
                 ),
                 SizedBox(height: AcceptRefuseConstants.bottomSpacing),
                 AcceptAndRefuse(
                   onAccept: onaccept,
-                  onRefuse: onexitentre,
+                  onRefuse: onexit,
                   isLoading: isLoading,
+                  isExit: isExit,
                 ),
               ],
             ),

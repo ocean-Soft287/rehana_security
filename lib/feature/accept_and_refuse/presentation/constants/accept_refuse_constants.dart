@@ -28,6 +28,17 @@ class AcceptRefuseConstants {
   // Button text
   static const String acceptButtonText = 'قبول';
   static const String refuseButtonText = 'رفض';
+  static const String confirmExitButtonText = 'تأكيد الخروج';
+  static const String cancelButtonText = 'إلغاء';
+
+  // Titles
+  static const String exitScreenTitle = 'معلومات الخروج';
+  static const String entryScreenTitle = 'معلومات الدخول';
+
+  // Warning
+  static const String expiryWarning = 'تحذير: هذه الدعوة منتهية الصلاحية!';
+  static const String amLabel = 'صباحا';
+  static const String pmLabel = 'مساءا';
 
   // Responsive breakpoints
   static const double tabletBreakpoint = 600.0;

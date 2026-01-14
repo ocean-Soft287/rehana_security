@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../../../core/Failure/Failure.dart';
 import '../../../../core/network/local/flutter_secure_storage.dart';
 import '../../../../core/utils/api/endpoint.dart';
@@ -21,12 +22,16 @@ class Loginrepoimp implements LoginRepo {
     required bool rememberme,
   }) async {
     try {
+      final fcmToken = await FirebaseMessaging.instance.getToken(
+          vapidKey: "BF4pFQe9Hn3uvUQvIxdcu1CKhF-B3knjSggQE30Vut-wy_YtvELbn5LCIwIP4_jMYEOVTnLgIxlxVT2nm_Poiuo"
+      );
       final response = await dioConsumer.post(
         EndPoint.login,
         data: {
           'email': email,
           'password': password,
           'rememberMe': rememberme,
+          'deviceToken': fcmToken,
         },
       );
       final json = response as Map<String, dynamic>;

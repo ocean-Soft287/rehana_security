@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -7,10 +8,13 @@ import 'blocobserever.dart';
 import 'core/router/app_router.dart';
 import 'core/services/services_locator.dart';
 import 'feature/conectivitiy/manger/internet_cubit.dart';
+import 'firebase_options.dart';
 
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   setup();
   Bloc.observer = MyBlocObserver();
 

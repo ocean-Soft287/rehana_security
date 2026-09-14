@@ -20,7 +20,6 @@ class Home extends StatelessWidget {
     List<String> chooseFrom = [
       "دخول",
       "خروج",
-      "تسجيل دعوة يدوي",
       "تسجيل خروج",
     ];
 
@@ -82,11 +81,6 @@ class Home extends StatelessWidget {
 
 
                           else if (index == 2) {
-                            context.push(AppRouter.oneTimeInvitation);
-                          }
-
-
-                          else if (index == 3) {
                             await SecureStorageService.deleteAll();
 
                             context.go(AppRouter.kLoginview);

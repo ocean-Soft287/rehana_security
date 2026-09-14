@@ -30,13 +30,12 @@ class AcceptAndRefuse extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         /// Accept button
-        CustomButtonInvtaion(
-          text: isExit
-              ? AcceptRefuseConstants.confirmExitButtonText
-              : AcceptRefuseConstants.acceptButtonText,
-          color: AppColors.bIcon,
-          onTap: onAccept,
-        ),
+        if (!isExit)
+          CustomButtonInvtaion(
+            text: AcceptRefuseConstants.acceptButtonText,
+            color: AppColors.bIcon,
+            onTap: onAccept,
+          ),
 
         /// Refuse button
         CustomButtonInvtaion(

@@ -28,7 +28,7 @@ class Loginrepoimp implements LoginRepo {
       final response = await dioConsumer.post(
         EndPoint.login,
         data: {
-          'email': email,
+          'EmailOrPhone': email,
           'password': password,
           'rememberMe': rememberme,
           'deviceToken': fcmToken,

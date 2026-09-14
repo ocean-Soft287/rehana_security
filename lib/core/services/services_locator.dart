@@ -7,9 +7,6 @@ import '../../feature/Auth/data/repo/auth_repo_imp.dart';
 import '../../feature/Auth/presentation/Manger/auth_cubit.dart';
 import '../../feature/accept_and_refuse/data/repo/acceptrepo.dart';
 import '../../feature/accept_and_refuse/presentation/manger/entre_exit_cubit.dart';
-import '../../feature/invitation/Presentaion/manger/securityonetime_cubit.dart';
-import '../../feature/invitation/data/repo/invitation_repo.dart';
-import '../../feature/invitation/data/repo/invitation_repo_imp.dart';
 import '../utils/api/endpoint.dart';
 import '../utils/api/api_consumer.dart';
 import '../utils/api/dio_consumer.dart';
@@ -36,9 +33,6 @@ void setup() {
   sl.registerLazySingleton<LoginRepo>(
           () => Loginrepoimp(dioConsumer: sl<DioConsumer>()));
   sl.registerFactory<AuthCubit>(() => AuthCubit(sl<LoginRepo>()));
-//sendinvitation
-  sl.registerLazySingleton<InvitationRepo>(() => Invitationrepoimp(dioConsumer: sl<DioConsumer>()),);
-  sl.registerFactory<SecurityonetimeCubit>(() => SecurityonetimeCubit(sl<InvitationRepo>()));
 //qr read
   sl.registerLazySingleton<Acceptrepo>(() => AcceptRepoImp(dioConsumer: sl<DioConsumer>()),);
   sl.registerFactory<EntreExitCubit>(() => EntreExitCubit(sl<Acceptrepo>()));

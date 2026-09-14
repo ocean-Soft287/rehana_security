@@ -14,4 +14,6 @@ abstract class InvitationRepo {
     File? guestPicture,
   });
 
+  Future<Either<Failure, List<int>>> getVillaNumbers();
+
 }

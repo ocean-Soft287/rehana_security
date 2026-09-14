@@ -53,6 +53,22 @@ class Invitationrepoimp implements InvitationRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, List<int>>> getVillaNumbers() async {
+    try {
+      final response = await dioConsumer.get(EndPoint.vilanumber);
+
+      if (response is List) {
+        return Right(List<int>.from(response));
+      }
+      return Left(ServerFailure("Unexpected response format"));
+    } on DioException catch (e) {
+      return Left(_handleDioError(e));
+    } catch (e) {
+      return Left(ServerFailure("Request failed: ${e.toString()}"));
+    }
+  }
+
   Failure _handleDioError(DioException error) {
     return ServerFailure(error.message ?? "Unknown error occurred");
   }

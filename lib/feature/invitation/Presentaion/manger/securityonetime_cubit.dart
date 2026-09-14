@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../data/model/invitation_model.dart';
@@ -32,14 +31,13 @@ class SecurityonetimeCubit extends Cubit<SecurityonetimeState> {
       vilaNumber: vilaNumber,
       guestPicture: guestPicture,
     );
-    response.fold(
-          (failure) => emit(SecurityonetimeFailure(failure.message)),
-          (invitation) {
-            imageEditProfilePhoto=null;
+    response.fold((failure) => emit(SecurityonetimeFailure(failure.message)), (
+      invitation,
+    ) {
+      imageEditProfilePhoto = null;
 
-            emit(SecurityonetimeSuccess(invitation));
-          }
-    );
+      emit(SecurityonetimeSuccess(invitation));
+    });
   }
 
   XFile? imageEditProfilePhoto;
@@ -67,30 +65,22 @@ class SecurityonetimeCubit extends Cubit<SecurityonetimeState> {
     }
   }
 
-  final List<int> vilanumber=[];
-
   void getvilanumber() async {
     emit(GetVillaNumberLoading());
-    try {
-      final Dio dio = Dio();
-      final response = await dio.get("http://78.89.159.126:9393/TheOneAPIRehana/api/Member/villaNumbers");
-
-      if (response.statusCode == 200 && response.data is List) {
-        vilanumber
-          ..clear()
-          ..addAll(List<int>.from(response.data));
-        emit(GetVillaNumberSuccess(vilanumber));
-      } else {
-        emit(GetVillaNumberError("Unexpected response format"));
-      }
-    } catch (e) {
-      emit(GetVillaNumberError(e.toString()));
-    }
-  }
-  Future<void> handleInvitationSuccess(BuildContext context, SecurityonetimeSuccess state) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("تم ارسال الدعوي بنجاح")),
+    final response = await invitationRepo.getVillaNumbers();
+    response.fold(
+      (failure) => emit(GetVillaNumberError(failure.message)),
+      (villaNumbers) => emit(GetVillaNumberSuccess(villaNumbers)),
     );
+  }
+
+  Future<void> handleInvitationSuccess(
+    BuildContext context,
+    SecurityonetimeSuccess state,
+  ) async {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("تم ارسال الدعوي بنجاح")));
 
     await Future.delayed(const Duration(milliseconds: 400));
 
@@ -99,4 +89,4 @@ class SecurityonetimeCubit extends Cubit<SecurityonetimeState> {
       Share.share(qr);
     }
   }
-  }
+}

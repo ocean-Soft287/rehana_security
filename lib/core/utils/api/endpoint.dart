@@ -11,7 +11,7 @@ class EndPoint {
 
   static String acceptionValidation = "$baseUrl/Invitation/acceptionValidation";
 
-  static String vilanumber = "$baseUrl/Invitation/acceptionValidation";
+  static String vilanumber = "$baseUrl/Member/villaNumbers";
   static String encryption="$baseUrl/Invitation/decryptInvitation";
 
 }

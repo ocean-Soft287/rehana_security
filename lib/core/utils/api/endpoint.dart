@@ -1,17 +1,26 @@
-
 class EndPoint {
-
   static String baseUrl = "http://78.89.159.126:9393/TheOneAPIRehana/api";
 
   /// auth
   static String login = "$baseUrl/SecurityGuard/login/securityGuard";
-  static String securityOneTimeInvitation = "$baseUrl/Invitation/securityOneTimeInvitation";
+  static String securityOneTimeInvitation =
+      "$baseUrl/Invitation/securityOneTimeInvitation";
 
   /// invitation
 
   static String acceptionValidation = "$baseUrl/Invitation/acceptionValidation";
 
   static String vilanumber = "$baseUrl/Invitation/acceptionValidation";
-  static String encryption="$baseUrl/Invitation/decryptInvitation";
+  static String encryption = "$baseUrl/Invitation/decryptInvitation";
 
+  /// manual invitation
+  static String villaList = "$baseUrl/SecurityGuard/list";
+  static String oneTimeInvitation = "$baseUrl/SecurityGuard/oneTimeInvitation";
+
+  /// registered invitations
+  static String oneTimeInvitations =
+      "$baseUrl/SecurityGuard/oneTimeInvitations";
+
+  static String endOneTimeInvitation(String invitationId) =>
+      "$baseUrl/SecurityGuard/oneTimeInvitation/$invitationId/end";
 }

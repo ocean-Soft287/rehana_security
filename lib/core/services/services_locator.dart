@@ -7,6 +7,12 @@ import '../../feature/Auth/data/repo/auth_repo_imp.dart';
 import '../../feature/Auth/presentation/Manger/auth_cubit.dart';
 import '../../feature/accept_and_refuse/data/repo/acceptrepo.dart';
 import '../../feature/accept_and_refuse/presentation/manger/entre_exit_cubit.dart';
+import '../../feature/manual_invitation/data/repo/manual_invitation_repo.dart';
+import '../../feature/manual_invitation/data/repo/manual_invitation_repo_imp.dart';
+import '../../feature/manual_invitation/presentation/manger/manual_invitation_cubit.dart';
+import '../../feature/registered_invitations/data/repo/registered_invitations_repo.dart';
+import '../../feature/registered_invitations/data/repo/registered_invitations_repo_imp.dart';
+import '../../feature/registered_invitations/presentation/manger/registered_invitations_cubit.dart';
 import '../utils/api/endpoint.dart';
 import '../utils/api/api_consumer.dart';
 import '../utils/api/dio_consumer.dart';
@@ -36,5 +42,17 @@ void setup() {
 //qr read
   sl.registerLazySingleton<Acceptrepo>(() => AcceptRepoImp(dioConsumer: sl<DioConsumer>()),);
   sl.registerFactory<EntreExitCubit>(() => EntreExitCubit(sl<Acceptrepo>()));
+
+  /// manual invitation
+  sl.registerLazySingleton<ManualInvitationRepo>(
+      () => ManualInvitationRepoImp(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory<ManualInvitationCubit>(
+      () => ManualInvitationCubit(sl<ManualInvitationRepo>()));
+
+  /// registered invitations
+  sl.registerLazySingleton<RegisteredInvitationsRepo>(
+      () => RegisteredInvitationsRepoImp(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory<RegisteredInvitationsCubit>(
+      () => RegisteredInvitationsCubit(sl<RegisteredInvitationsRepo>()));
 
 }

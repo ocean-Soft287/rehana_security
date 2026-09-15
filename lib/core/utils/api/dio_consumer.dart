@@ -56,6 +56,7 @@ class DioConsumer extends ApiConsumer {
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
+    bool forceRefresh = false,
   }) async {
     try {
       final response = await dio.get(
@@ -63,6 +64,14 @@ class DioConsumer extends ApiConsumer {
         queryParameters: queryParameters,
         options: Options(
           headers: await _buildHeaders(withAuth: true),
+          // تجاوز الكاش للبيانات التى تتغير بعد التعديل (مثل قوائم الدعاوى)
+          extra:
+              forceRefresh
+                  ? CacheOptions(
+                    store: MemCacheStore(),
+                    policy: CachePolicy.noCache,
+                  ).toExtra()
+                  : null,
         ),
       );
       return response.data;

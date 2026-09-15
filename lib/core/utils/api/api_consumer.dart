@@ -3,6 +3,7 @@ abstract class ApiConsumer {
       String path, {
         Object? data,
         Map<String, dynamic>? queryParameters,
+        bool forceRefresh = false,
       });
 
   Future<dynamic> post(

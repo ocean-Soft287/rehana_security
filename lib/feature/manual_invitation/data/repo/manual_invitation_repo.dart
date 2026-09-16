@@ -5,7 +5,8 @@ import '../model/manual_invitation_request.dart';
 import '../model/villa_model.dart';
 
 abstract class ManualInvitationRepo {
-  Future<Either<Failure, List<VillaModel>>> getVillas();
+  /// [villaNumber] بحث اختيارى برقم الفيلا على السيرفر
+  Future<Either<Failure, List<VillaModel>>> getVillas({String? villaNumber});
 
   Future<Either<Failure, String>> sendOneTimeInvitation(
     ManualInvitationRequest request,

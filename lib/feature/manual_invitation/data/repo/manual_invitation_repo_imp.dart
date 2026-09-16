@@ -14,9 +14,17 @@ class ManualInvitationRepoImp implements ManualInvitationRepo {
   ManualInvitationRepoImp({required this.dioConsumer});
 
   @override
-  Future<Either<Failure, List<VillaModel>>> getVillas() async {
+  Future<Either<Failure, List<VillaModel>>> getVillas({
+    String? villaNumber,
+  }) async {
     try {
-      final response = await dioConsumer.get(EndPoint.villaList);
+      final search = villaNumber?.trim();
+
+      final response = await dioConsumer.get(
+        EndPoint.villaList,
+        queryParameters:
+            (search == null || search.isEmpty) ? null : {'villaNumber': search},
+      );
 
       final data = response is Response ? response.data : response;
 

@@ -11,6 +11,7 @@ import '../../../../../core/widget/loading_button.dart';
 import '../../../data/model/villa_model.dart';
 import '../../manger/manual_invitation_cubit.dart';
 import '../widget/manual_invitation_field.dart';
+import '../widget/villa_search_sheet.dart';
 
 class ManualInvitationScreen extends StatelessWidget {
   const ManualInvitationScreen({super.key});
@@ -46,6 +47,18 @@ class _ManualInvitationViewState extends State<ManualInvitationView> {
     _carPlateController.dispose();
     _notesController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickVilla() async {
+    final villa = await showVillaSearchSheet(
+      context: context,
+      cubit: context.read<ManualInvitationCubit>(),
+      selectedVilla: _selectedVilla,
+    );
+
+    if (villa == null || !mounted) return;
+
+    setState(() => _selectedVilla = villa);
   }
 
   String _formatVisitTime(DateTime dateTime) {
@@ -156,12 +169,10 @@ class _ManualInvitationViewState extends State<ManualInvitationView> {
               _resetForm();
             } else if (state is SendInvitationFailure) {
               context.showErrorMessage(state.message);
-            } else if (state is VillasFailure) {
-              context.showErrorMessage(state.message);
             }
+            // خطأ تحميل الفلل بيظهر جوه البوتوم شيت نفسه
           },
           builder: (context, state) {
-            final cubit = context.read<ManualInvitationCubit>();
             final isSending = state is SendInvitationLoading;
             final isLoadingVillas = state is VillasLoading;
 
@@ -175,74 +186,40 @@ class _ManualInvitationViewState extends State<ManualInvitationView> {
                     children: [
                       /// رقم الفيلا + اسم المالك
                       const FieldLabel(text: 'رقم الفيلا', isRequired: true),
-                      if (isLoadingVillas)
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: const LoadingButton(),
-                          ),
-                        )
-                      else
-                        DropdownButtonFormField<VillaModel>(
-                          initialValue: _selectedVilla,
-                          isExpanded: true,
-                          icon: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: AppColors.circlecolor,
-                          ),
+                      InkWell(
+                        onTap: isSending ? null : _pickVilla,
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: InputDecorator(
                           decoration: manualInvitationDecoration(
                             hintText: 'اختر رقم الفيلا',
-                          ),
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontFamily: Font.alex,
-                            color: AppColors.black,
-                          ),
-                          items:
-                              cubit.villas
-                                  .map(
-                                    (villa) => DropdownMenuItem<VillaModel>(
-                                      value: villa,
-                                      child: Text(
-                                        villa.displayName,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontFamily: Font.alex,
-                                          color: AppColors.black,
-                                        ),
+                            suffixIcon:
+                                isLoadingVillas && _selectedVilla == null
+                                    ? Padding(
+                                      padding: EdgeInsets.all(12.r),
+                                      child: const FittedBox(
+                                        child: LoadingButton(),
                                       ),
+                                    )
+                                    : Icon(
+                                      Icons.search,
+                                      color: AppColors.circlecolor,
+                                      size: 20.r,
                                     ),
-                                  )
-                                  .toList(),
-                          onChanged:
-                              isSending
-                                  ? null
-                                  : (villa) {
-                                    setState(() => _selectedVilla = villa);
-                                  },
-                          validator:
-                              (value) =>
-                                  value == null
-                                      ? 'من فضلك اختر رقم الفيلا'
-                                      : null,
-                        ),
-
-                      if (state is VillasFailure) ...[
-                        SizedBox(height: 8.h),
-                        TextButton.icon(
-                          onPressed: cubit.getVillas,
-                          icon: Icon(Icons.refresh, color: AppColors.bIcon),
-                          label: Text(
-                            'إعادة تحميل الفلل',
+                          ),
+                          child: Text(
+                            _selectedVilla?.displayName ?? 'اختر رقم الفيلا',
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
+                              fontSize: 14.sp,
                               fontFamily: Font.alex,
-                              fontSize: 13.sp,
-                              color: AppColors.bIcon,
+                              color:
+                                  _selectedVilla == null
+                                      ? AppColors.circlecolor
+                                      : AppColors.black,
                             ),
                           ),
                         ),
-                      ],
+                      ),
 
                       SizedBox(height: 18.h),
 

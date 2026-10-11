@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class SecureStorageService {
   static final _storage = FlutterSecureStorage();
@@ -16,7 +17,13 @@ class SecureStorageService {
   }
 
   static Future<String?> read(dynamic key) async {
-    return await _storage.read(key: key.toString());
+    try {
+      return await _storage.read(key: key.toString());
+    } on PlatformException {
+      // فشل فك التشفير (مثلاً بعد استعادة نسخة احتياطية) فنمسح البيانات التالفة
+      await _storage.deleteAll();
+      return null;
+    }
   }
 
   static Future<void> delete(dynamic key) async {
@@ -33,6 +40,6 @@ class SecureStorageService {
 
   // دالة مساعدة للحصول على التوكن
   static Future<String?> getToken() async {
-    return await _storage.read(key: token);
+    return await read(token);
   }
 }

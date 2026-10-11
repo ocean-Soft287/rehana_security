@@ -10,10 +10,10 @@ class EntreExitCubit extends Cubit<EntreExitState> {
   EntreExitCubit(this.acceptrepo) : super(EntreExitInitial());
   final Acceptrepo acceptrepo;
 
-  Future<void> decryption(String data) async {
+  Future<void> decryption(String data, String signature) async {
     emit(InvitationLoading());
 
-    final response = await acceptrepo.decryption(data);
+    final response = await acceptrepo.decryption(data, signature);
 
     response.fold(
       (failure) {

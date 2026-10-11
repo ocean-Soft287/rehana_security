@@ -22,14 +22,16 @@ class EnterandExit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extract encrypted data from QR code JSON
+    // Extract encrypted data and signature from QR code JSON
     String encryptedText;
+    String signature = '';
     try {
       final dynamic decodedData = jsonDecode(qrData);
 
-      // If the decoded data is a Map, extract the EncryptedData field
+      // If the decoded data is a Map, extract the EncryptedData and Signature fields
       if (decodedData is Map<String, dynamic>) {
         encryptedText = decodedData["EncryptedData"] as String? ?? qrData;
+        signature = decodedData["Signature"] as String? ?? '';
       } else {
         // If it's not a map, use the decoded data as-is
         encryptedText = decodedData.toString();
@@ -66,7 +68,7 @@ class EnterandExit extends StatelessWidget {
       body: BlocProvider(
         create: (context) {
           final cubit = GetIt.instance<EntreExitCubit>();
-          cubit.decryption(encryptedText);
+          cubit.decryption(encryptedText, signature);
           return cubit;
         },
         child: SingleChildScrollView(

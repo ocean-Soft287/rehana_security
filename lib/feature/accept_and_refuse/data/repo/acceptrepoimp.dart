@@ -15,11 +15,14 @@ class AcceptRepoImp implements Acceptrepo {
 
   @override
   @override
-  Future<Either<Failure, GuestInvitationModel>> decryption(String data) async {
+  Future<Either<Failure, GuestInvitationModel>> decryption(
+    String data,
+    String signature,
+  ) async {
     try {
       final response = await dioConsumer.post(
         EndPoint.encryption,
-        data: {'encryptedData': data},
+        data: {'encryptedData': data, 'signature': signature},
       );
 
       final Map<String, dynamic> json =
